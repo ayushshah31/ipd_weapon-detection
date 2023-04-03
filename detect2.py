@@ -227,7 +227,7 @@ def run(
                         save_one_box(xyxy, result, file=savePath, BGR=True)
                         if(conf<=0.75):
                             print("Confidence is low",conf) 
-                            detect.run(source=savePath,conf_thres=0.75,weights=weights,savePath=str(save_dir / names[c] / 'edge' ),fileName = f"{p.stem}" )
+                            detect.run(source=savePath,conf_thres=0.75,weights=weights,savePath=str(save_dir / 'edge' / names[c] ),fileName = f"{p.stem}" )
 
 
             # Stream results
