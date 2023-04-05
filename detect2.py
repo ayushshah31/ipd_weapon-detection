@@ -211,8 +211,12 @@ def run(
                         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
                         eq = clahe.apply(gray)
 
+                        gamma = 1.5
+                        gamma_correction = ((eq/255) ** (1/gamma)) * 255
+                        gamma_correction = gamma_correction.astype('uint8')
+
                         # Convert the equalized image back to BGR color space
-                        eq_color = cv2.cvtColor(eq, cv2.COLOR_GRAY2BGR)
+                        eq_color = cv2.cvtColor(gamma_correction, cv2.COLOR_GRAY2BGR)
 
                         # Combine the equalized image with the original image
                         result = cv2.addWeighted(imc, 0.7, eq_color, 0.3, 0)
@@ -227,7 +231,7 @@ def run(
                         save_one_box(xyxy, result, file=savePath, BGR=True)
                         if(conf<=0.75):
                             print("Confidence is low",conf) 
-                            detect.run(source=savePath,conf_thres=0.75,weights=weights,savePath=str(save_dir / 'edge' / names[c] ),fileName = f"{p.stem}" )
+                            detect.run(source=savePath,pre_conf=conf,weights=weights,savePath=str(save_dir / 'edge' / names[c] ),fileName = f"{p.stem}" )
 
 
             # Stream results
